@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Contacts</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+    <ion-item *ngFor="let contact of contactsFound" (click)="goToChat()">
+        <ion-avatar slot="start">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-avatar>
+        <ion-label>
+          {{contact?.displayName}}
+        </ion-label>
+        
+        <ion-chip color="danger">
+            <ion-label>In Range</ion-label>
+          </ion-chip>
+      </ion-item>
+
+      <ion-item  (click)="goToChat()">
+        <ion-avatar slot="start">
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+        </ion-avatar>
+        <ion-label>
+        Hello
+        </ion-label>
+        <ion-label >
+         {{contactsFound.length}}
+        </ion-label>
+        <ion-chip color="danger">
+            <ion-label>In Range</ion-label>
+          </ion-chip>
+      </ion-item>
+</ion-content>

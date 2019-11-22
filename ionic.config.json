@@ -1,5 +1,7 @@
 {
   "name": "blankApp",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
