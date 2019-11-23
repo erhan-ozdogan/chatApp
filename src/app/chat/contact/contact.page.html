@@ -5,32 +5,25 @@
 </ion-header>
 
 <ion-content>
-  
-    <ion-item *ngFor="let contact of contactsFound" (click)="goToChat()">
+  <a routerLink="/messages">Go to Chat</a>
+    <ion-item-group *ngFor="let contact of contactsFound" >
+      <ion-item (click)="revealNumber(contact.id)">
         <ion-avatar slot="start">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
+          <img src="contact.photos[0].value">
         </ion-avatar>
         <ion-label>
           {{contact?.displayName}}
         </ion-label>
-        
         <ion-chip color="danger">
             <ion-label>In Range</ion-label>
-          </ion-chip>
+        </ion-chip>
       </ion-item>
-
-      <ion-item  (click)="goToChat()">
-        <ion-avatar slot="start">
-          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAAAAACH5BAAAAAAALAAAAAABAAEAAAICTAEAOw==">
-        </ion-avatar>
-        <ion-label>
-        Hello
-        </ion-label>
-        <ion-label >
-         {{contactsFound.length}}
-        </ion-label>
-        <ion-chip color="danger">
-            <ion-label>In Range</ion-label>
-          </ion-chip>
-      </ion-item>
+      <ion-item class="number" *ngIf="showing.includes(contact.id)==true">
+        <div class="itemcontent">
+          <ion-label class="number">
+            {{contact.phoneNumbers[0].value}}
+          </ion-label>
+        </div>
+      </ion-item>  
+    </ion-item-group>
 </ion-content>

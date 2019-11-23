@@ -7,19 +7,19 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ChatModule } from "./chat/chat.module";
 import { AppComponent } from './app.component';
+import { AutosizeModule } from 'ngx-autosize';
+
+
 import { AppRoutingModule } from './app-routing.module';
-import { Contacts } from "@ionic-native/contacts/ngx";
-import { AngularFireModule } from "angularfire2";
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,ChatModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,ChatModule,AutosizeModule],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    Contacts
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
