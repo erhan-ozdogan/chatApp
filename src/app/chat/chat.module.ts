@@ -8,6 +8,9 @@ import { Contacts } from "@ionic-native/contacts/ngx";
 import { AutosizeModule } from 'ngx-autosize';
 import { AngularFireModule } from "angularfire2";
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
+
 
 
 
@@ -26,7 +29,8 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
   ],
   providers: [
     Contacts,
-    Keyboard
+    Keyboard,
+    LocalNotifications,
   ],
 })
 export class ChatModule { }
