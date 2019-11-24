@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactServiceService } from "../../services/contactService/contact-service.service";
 import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
+import { SQLiteService,user } from "../../services/SQLite/sqlite.service";
+import { Platform } from "@ionic/angular";
+
+
 
 
 @Component({
@@ -11,11 +15,20 @@ import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
 export class ContactPage implements OnInit {
   contactsFound:Contact[]=[];
   showing:number[]=[];
+  users:user[]=[];
 
-  constructor(private contactService:ContactServiceService,private contacts:Contacts) { }
+  constructor(private contactService:ContactServiceService,private contacts:Contacts,private sqliteService:SQLiteService) { }
 
   ngOnInit() {    
     this.loadContact();
+    this.sqliteService.getDatabaseState().subscribe(ready => {
+      if(ready){
+        console.log("Alindi");
+        this.sqliteService.getUsers().subscribe(users =>{
+          this.users=users;
+        })
+      }
+    })
 
   }
   revealNumber(contactId:number){

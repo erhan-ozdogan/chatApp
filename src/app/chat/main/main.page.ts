@@ -11,9 +11,9 @@ export class MainPage implements OnInit {
   constructor(private notificationService:NotificationService) { }
 
   ngOnInit() {
+   
   }
   getNotify(){
   this.notificationService.createNotification();
-
   }
 }

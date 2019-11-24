@@ -7,4 +7,17 @@
 <ion-content>
     <ion-button routerLink="messages" (click)="getNotify()">Go Messages</ion-button>
     <ion-button routerLink="contact">Go Contacts</ion-button>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button tab="messages">
+          <ion-icon name="calendar"></ion-icon>
+          <ion-label>Messages</ion-label>
+        </ion-tab-button>
+    
+        <ion-tab-button tab="contact">
+          <ion-icon name="contacts"></ion-icon>
+          <ion-label>Contacts</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
 </ion-content>

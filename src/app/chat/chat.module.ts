@@ -9,8 +9,9 @@ import { AutosizeModule } from 'ngx-autosize';
 import { AngularFireModule } from "angularfire2";
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
-
-
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
+import {HttpClientModule } from '@angular/common/http'
 
 
 
@@ -24,13 +25,16 @@ import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
     AutosizeModule,
     ContactPageModule,
     MessagesPageModule,
-    AutosizeModule
+    AutosizeModule,
+    HttpClientModule,
 
   ],
   providers: [
     Contacts,
     Keyboard,
     LocalNotifications,
+    SQLite,
+    SQLitePorter,
   ],
 })
 export class ChatModule { }

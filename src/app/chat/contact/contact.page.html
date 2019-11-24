@@ -26,4 +26,12 @@
         </div>
       </ion-item>  
     </ion-item-group>
+    <ion-item class="number" *ngFor="let user of users">
+      <div class="itemcontent">
+        <ion-label class="number">
+          {{user.name}}
+        </ion-label>
+      </div>
+    </ion-item>  
+    
 </ion-content>
