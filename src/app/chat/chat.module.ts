@@ -6,12 +6,22 @@ import { ContactPageModule } from "./contact/contact.module";
 import { MessagesPageModule } from "./messages/messages.module";
 import { Contacts } from "@ionic-native/contacts/ngx";
 import { AutosizeModule } from 'ngx-autosize';
+
 import { AngularFireModule } from "angularfire2";
+import { AngularFirestoreModule } from "angularfire2/firestore";
+
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
-import {HttpClientModule } from '@angular/common/http'
+import { IonicStorageModule } from '@ionic/storage';
+
+import {HttpClientModule } from '@angular/common/http';
+
+import {environment} from '../../environments/environment';
+
+
 
 
 
@@ -27,6 +37,11 @@ import {HttpClientModule } from '@angular/common/http'
     MessagesPageModule,
     AutosizeModule,
     HttpClientModule,
+    AngularFireModule,
+    AngularFirestoreModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    IonicStorageModule.forRoot(),
+
 
   ],
   providers: [

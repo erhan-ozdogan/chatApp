@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="main"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row size="8">
+      <ion-col size="8" color="primary" offset="2">
+        <form   [formGroup]="registerForm" (ngSubmit)="register()">
+          <ion-label>Name</ion-label>
+          <ion-item>
+            <ion-input formControlName="name" name="name" type="text" placeholder="Name"></ion-input>
+          </ion-item>
+          <ion-label>Surname</ion-label>
+          <ion-item>
+            <ion-input formControlName="surname" name="surname" type="text" placeholder="Surname"></ion-input>
+          </ion-item>
+          <ion-label>Username</ion-label>
+          <ion-item>
+            <ion-input formControlName="username" name="username" type="text" placeholder="Username"></ion-input>
+          </ion-item>
+          <ion-label>Phone Number</ion-label>
+          <ion-item>
+            <ion-input formControlName="phone" type="tel" name="phone"  placeholder="Phone"></ion-input>
+          </ion-item>
+          <ion-label>Bluetooth ID</ion-label>
+          <ion-item>
+            <ion-input name="btAddress" formControlName="btAddress" type="text" placeholder="Bluetooth ID"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-input name="loginInfo" formControlName="loginInfo" type="hidden" visible="false" value="false"></ion-input>
+          </ion-item>
+          <ion-button (click)="register()" size="medium" [disabled]="!registerForm.valid" expand="block">Register</ion-button>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>  

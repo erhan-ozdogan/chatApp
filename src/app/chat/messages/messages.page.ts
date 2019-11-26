@@ -31,7 +31,7 @@ export class MessagesPage implements OnInit {
 
   currentUser="simon";
   newMessage='';
-  @ViewChild(IonContent) content: IonContent;
+  @ViewChild(IonContent,null) content: IonContent;
 
   constructor(private keyboard:Keyboard) { 
   }

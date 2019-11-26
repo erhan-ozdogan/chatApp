@@ -5,12 +5,13 @@
 </ion-header>
 
 <ion-content>
-    <ion-button routerLink="messages" (click)="getNotify()">Go Messages</ion-button>
-    <ion-button routerLink="contact">Go Contacts</ion-button>
+    <!--<ion-button routerLink="messages" (click)="getNotify()">Go Messages</ion-button> 
+    <ion-button routerLink="login">Go Contacts</ion-button>-->
+
     <ion-tabs>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="messages">
-          <ion-icon name="calendar"></ion-icon>
+          <ion-icon name="chatbubbles"></ion-icon>
           <ion-label>Messages</ion-label>
         </ion-tab-button>
     
@@ -18,6 +19,10 @@
           <ion-icon name="contacts"></ion-icon>
           <ion-label>Contacts</ion-label>
         </ion-tab-button>
+        <ion-tab-button tab="login">
+            <ion-icon name="log-in"></ion-icon>
+            <ion-label>Register</ion-label>
+          </ion-tab-button>
       </ion-tab-bar>
     </ion-tabs>
 </ion-content>
