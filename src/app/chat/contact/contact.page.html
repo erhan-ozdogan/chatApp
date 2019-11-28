@@ -2,8 +2,11 @@
   <ion-toolbar>
     <ion-title>Contacts</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="main"></ion-back-button>
+      <ion-back-button defaultHref="/chat/main"></ion-back-button>
     </ion-buttons>
+    <ion-button (click)="getDevices()" slot="end"><ion-icon name="Bluetooth"></ion-icon>Tara</ion-button>
+    <ion-button (click)="loadAppContact()" slot="end"><ion-icon name="Contacts"></ion-icon>App Contacts</ion-button>
+
   </ion-toolbar>
 </ion-header>
 
@@ -36,5 +39,22 @@
         </ion-label>
       </div>
     </ion-item>  
+    <ion-list>
+      <h3>Yakınınızdaki Cihazlar</h3>
+      <p *ngIf="devices.length==0">Cihaz Yok Tekrar Tarayınız</p>
+      <ion-card-content ion-item *ngFor="let device of devices">
+        <p>{{device.name || 'Unnamed'}}</p>
+        <p>{{device.id}}</p>
+        <p> RSSI: {{device.rssi}}</p>
+      </ion-card-content>
+    </ion-list>
+    <ion-list>
+      <h3>Uygulamayı Kullanan Kişilerin</h3>
+      <p *ngIf="appContacts.length==0">Uygulamayı Kullanan Arakadaşın Yok</p>
+      <ion-card-content ion-item *ngFor="let appContact of appContacts">
+        <p>{{appContact.displayName}}</p>
+        <p>{{appContact.phoneNumbers[0].value}}</p>
+      </ion-card-content>
+    </ion-list>
     
 </ion-content>

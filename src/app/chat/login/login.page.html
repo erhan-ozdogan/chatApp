@@ -24,16 +24,13 @@
           <ion-item>
             <ion-input formControlName="username" name="username" type="text" placeholder="Username"></ion-input>
           </ion-item>
+          <ion-label>Password</ion-label>
+          <ion-item>
+            <ion-input formControlName="password" type="Password" name="password"  placeholder="Password"></ion-input>
+          </ion-item>
           <ion-label>Phone Number</ion-label>
           <ion-item>
             <ion-input formControlName="phone" type="tel" name="phone"  placeholder="Phone"></ion-input>
-          </ion-item>
-          <ion-label>Bluetooth ID</ion-label>
-          <ion-item>
-            <ion-input name="btAddress" formControlName="btAddress" type="text" placeholder="Bluetooth ID"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input name="loginInfo" formControlName="loginInfo" type="hidden" visible="false" value="false"></ion-input>
           </ion-item>
           <ion-button (click)="register()" size="medium" [disabled]="!registerForm.valid" expand="block">Register</ion-button>
         </form>

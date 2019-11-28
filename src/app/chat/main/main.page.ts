@@ -9,29 +9,30 @@ import { Platform } from "@ionic/angular";
   templateUrl: './main.page.html',
   styleUrls: ['./main.page.scss'],
 })
-export class MainPage implements OnInit {
+export class MainPage implements OnInit { 
 
   constructor(private notificationService:NotificationService,private auth:AuthenticationService,private router:Router,private plt:Platform) {
     
    }
 
   ngOnInit() {
-    this.initializeApp();
-
-  }
-  initializeApp(){
-    this.plt.ready().then(()=>{
+      this.plt.ready().then(()=>{
       this.auth.isRegister().then(res =>{
         console.log(res);
         if(!res){
           this.goto();
         }
+
       });
     });
+
+
   }
   goto(){
     this.router.navigate(['chat/login']);
   }
+
+
   getNotify(){
   this.notificationService.createNotification();
   }

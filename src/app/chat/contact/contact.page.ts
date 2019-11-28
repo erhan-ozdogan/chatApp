@@ -3,6 +3,11 @@ import { ContactServiceService } from "../../services/contactService/contact-ser
 import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
 import { SQLiteService,user } from "../../services/SQLite/sqlite.service";
 import { Platform } from "@ionic/angular";
+import { AuthenticationService } from "../../services/authentication/authentication.service";
+import { Router } from "@angular/router";
+import {BluetoothService} from '../../services/bluetooth/bluetooth.service'
+import { BleService } from "../../services/BLE/ble.service";
+import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
 
 
 
@@ -14,23 +19,32 @@ import { Platform } from "@ionic/angular";
 })
 export class ContactPage implements OnInit {
   contactsFound:Contact[]=[];
+  appContacts:Contact[]=[];
   showing:number[]=[];
   users:user[]=[];
+  devices:any[]=[];
 
-  constructor(private contactService:ContactServiceService,private contacts:Contacts,private sqliteService:SQLiteService) { }
+  constructor(private contactService:ContactServiceService,
+              private sqliteService:SQLiteService,
+              private plt:Platform,
+              private bluetoothService:BluetoothService,
+              private ble:BleService,
+              private fs:FirestoreServiceService) { }
 
-  ngOnInit() {    
+  ngOnInit() {   
+
     this.loadContact();
-    this.sqliteService.getDatabaseState().subscribe(ready => {
+    /*this.sqliteService.getDatabaseState().subscribe(ready => {
       if(ready){
         console.log("Alindi");
         this.sqliteService.getUsers().subscribe(users =>{
           this.users=users;
         })
       }
-    })
+    })*/
 
   }
+
   revealNumber(contactId:number){
     console.log(contactId);
       let element=this.showing.indexOf(contactId);
@@ -38,6 +52,11 @@ export class ContactPage implements OnInit {
       this.showing.push(contactId);
     else if(element>-1)
       this.showing.splice(element,1);
+
+  }
+  getDevices(){
+    this.ble.scan();
+    this.devices=this.ble.devices;
   }
 
   goToChat(){
@@ -48,6 +67,10 @@ export class ContactPage implements OnInit {
     this.contactService.getContacts().then((contacts: Contact[]) =>{
       this.contactsFound=contacts;
     });
+  }
+  loadAppContact(){
+    console.log("loadAppContact");
+    this.appContacts=this.fs.checkUser();
   }
   
 }

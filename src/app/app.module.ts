@@ -8,6 +8,8 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ChatModule } from "./chat/chat.module";
 import { AppComponent } from './app.component';
 import { AutosizeModule } from 'ngx-autosize';
+import {BLE} from '@ionic-native/ble/ngx'
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,ChatModule,AutosizeModule],
   providers: [
+    BLE,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

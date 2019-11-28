@@ -18,6 +18,7 @@ export class AuthenticationService {
     });
   }
   checkIsRegister(){
+    
     this.storage.get("register").then(res =>{
       if(res){
         this.registerAuth.next(true);

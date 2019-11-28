@@ -14,12 +14,11 @@ export interface message{
 }
 
 export interface user{
-  btAddress:string;
   username:string,
   name:string,
+  password:string,
   surname:string,
   phone:string,
-  loginInfo,
   
 }
 export interface chat{
@@ -76,8 +75,7 @@ export class SQLiteService {
             name:data.rows.item(i).name,
             surname:data.rows.item(i).surname,
             phone:data.rows.item(i).phone,
-            btAddress:data.rows.item(i).btAddress,
-            loginInfo:data.rows.item(i).loginInfo
+            password:data.rows.item(i).password,
             
           });
         }

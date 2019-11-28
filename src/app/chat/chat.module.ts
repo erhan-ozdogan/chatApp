@@ -18,6 +18,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 
 import {HttpClientModule } from '@angular/common/http';
+import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
+import {BLE} from '@ionic-native/ble/ngx'
 
 import {environment} from '../../environments/environment';
 
@@ -39,6 +41,7 @@ import {environment} from '../../environments/environment';
     HttpClientModule,
     AngularFireModule,
     AngularFirestoreModule,
+ 
     AngularFireModule.initializeApp(environment.firebase),
     IonicStorageModule.forRoot(),
 
@@ -49,7 +52,10 @@ import {environment} from '../../environments/environment';
     Keyboard,
     LocalNotifications,
     SQLite,
-    SQLitePorter,
+    SQLitePorter,   
+    BluetoothLE,
+    BLE,
+
   ],
 })
 export class ChatModule { }
