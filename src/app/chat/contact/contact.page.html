@@ -1,6 +1,5 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Contacts</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/chat/main"></ion-back-button>
     </ion-buttons>
@@ -11,18 +10,14 @@
 </ion-header>
 
 <ion-content>
-  <a routerLink="/messages">Go to Chat</a>
     <ion-item-group *ngFor="let contact of contactsFound" >
       <ion-item (click)="revealNumber(contact.id)">
         <ion-avatar slot="start">
-          <img src="contact.photos[0].value">
-        </ion-avatar>
+          <img src="../../../assets/dummy_pic.png">
+        </ion-avatar> 
         <ion-label>
           {{contact?.displayName}}
         </ion-label>
-        <ion-chip color="danger">
-            <ion-label>In Range</ion-label>
-        </ion-chip>
       </ion-item>
       <ion-item class="number" *ngIf="showing.includes(contact.id)==true">
         <div class="itemcontent">
@@ -39,6 +34,7 @@
         </ion-label>
       </div>
     </ion-item>  
+    
     <ion-list>
       <h3>Yakınınızdaki Cihazlar</h3>
       <p *ngIf="devices.length==0">Cihaz Yok Tekrar Tarayınız</p>
@@ -48,13 +44,22 @@
         <p> RSSI: {{device.rssi}}</p>
       </ion-card-content>
     </ion-list>
+
     <ion-list>
       <h3>Uygulamayı Kullanan Kişilerin</h3>
       <p *ngIf="appContacts.length==0">Uygulamayı Kullanan Arakadaşın Yok</p>
-      <ion-card-content ion-item *ngFor="let appContact of appContacts">
-        <p>{{appContact.displayName}}</p>
-        <p>{{appContact.phoneNumbers[0].value}}</p>
-      </ion-card-content>
+      <ion-item *ngFor="let appContact of appContacts" routerLink="/chat/messages">
+        <ion-avatar slot="start">
+            <img src="../../../assets/dummy_pic.png">
+        </ion-avatar>
+        <ion-label>{{appContact.displayName}}</ion-label>
+      </ion-item>
     </ion-list>
+
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="loadContact()">
+          <ion-icon name="Contacts"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
     
 </ion-content>

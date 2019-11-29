@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { AutosizeModule } from "ngx-autosize";
 import { IonContent } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
+import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 
 
 @Component({
@@ -33,7 +34,7 @@ export class MessagesPage implements OnInit {
   newMessage='';
   @ViewChild(IonContent,null) content: IonContent;
 
-  constructor(private keyboard:Keyboard) { 
+  constructor(private keyboard:Keyboard,private rdb:RealtimedbService) { 
   }
 
   ngOnInit() {
@@ -43,17 +44,17 @@ export class MessagesPage implements OnInit {
   }
 
   sendMessage(){
-    this.messages.push({
-      user:'simon',
-      createdAt: new Date().getTime(),
-      msg:this.newMessage
-    });
-    this.newMessage='';
-    setTimeout(()=>{
-      this.content.scrollToBottom(200);
-    });
-    
-    
+    this.rdb.sendMessage("+905337750027","+905389640431","Merhaba Nasılsın").then(()=>{
+      this.messages.push({
+        user:'simon',
+        createdAt: new Date().getTime(),
+        msg:this.newMessage
+      });
+      this.newMessage='';
+      setTimeout(()=>{
+        this.content.scrollToBottom(200);
+      });
+    }) 
   }
 
 }

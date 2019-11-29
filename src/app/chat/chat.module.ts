@@ -20,6 +20,8 @@ import { IonicStorageModule } from '@ionic/storage';
 import {HttpClientModule } from '@angular/common/http';
 import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
 import {BLE} from '@ionic-native/ble/ngx'
+import { AngularFireDatabase } from 'angularfire2/database';
+
 
 import {environment} from '../../environments/environment';
 
@@ -55,6 +57,8 @@ import {environment} from '../../environments/environment';
     SQLitePorter,   
     BluetoothLE,
     BLE,
+    AngularFireDatabase,
+
 
   ],
 })

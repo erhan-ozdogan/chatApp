@@ -8,6 +8,10 @@ import { Router } from "@angular/router";
 import {BluetoothService} from '../../services/bluetooth/bluetooth.service'
 import { BleService } from "../../services/BLE/ble.service";
 import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { LoadingController } from '@ionic/angular';
+
+
 
 
 
@@ -23,17 +27,21 @@ export class ContactPage implements OnInit {
   showing:number[]=[];
   users:user[]=[];
   devices:any[]=[];
+  contactImages:any[]=[];
+  loading;
+
 
   constructor(private contactService:ContactServiceService,
               private sqliteService:SQLiteService,
-              private plt:Platform,
-              private bluetoothService:BluetoothService,
               private ble:BleService,
-              private fs:FirestoreServiceService) { }
+              private fs:FirestoreServiceService,
+              private sanitizer:DomSanitizer,
+              private loadingController:LoadingController) { }
 
   ngOnInit() {   
 
-    this.loadContact();
+    //this.loadContact();
+    this.loadAppContact();
     /*this.sqliteService.getDatabaseState().subscribe(ready => {
       if(ready){
         console.log("Alindi");
@@ -64,13 +72,32 @@ export class ContactPage implements OnInit {
 
   }
   loadContact(){
-    this.contactService.getContacts().then((contacts: Contact[]) =>{
-      this.contactsFound=contacts;
-    });
+    if(this.contactsFound.length>0){
+      this.contactsFound=[];
+    }
+    else{
+      this.contactService.getContacts().then((contacts: Contact[]) =>{
+        this.contactsFound=contacts;
+      });
+    }
   }
   loadAppContact(){
+    this.presentLoading();
     console.log("loadAppContact");
-    this.appContacts=this.fs.checkUser();
+    this.appContacts=this.fs.getUser();
+
   }
+
+  async presentLoading() {
+    this.loading= await this.loadingController.create({
+      message: 'Lütfen Bekleyin',
+    }).then(res =>{
+      res.present();
+      setTimeout(() => {
+        res.dismiss();
+      }, 2000);
+    })
+  }
+
   
 }
