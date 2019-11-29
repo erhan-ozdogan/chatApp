@@ -3,6 +3,8 @@ import { AutosizeModule } from "ngx-autosize";
 import { IonContent } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
+import { Resolve, ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
+
 
 
 @Component({
@@ -12,29 +14,18 @@ import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service"
 })
 export class MessagesPage implements OnInit {
 
-  messages=[
-    {
-      user:'simon',
-      createdAt:1554090856000,
-      msg:'Hey whats up mate?'
-    },
-    {
-      user:'max',
-      createdAt:1554090956000,
-      msg:'Working on the Ionic mission you?'
-    },
-    {
-      user:'simon',
-      createdAt:1554091056000,
-      msg:'Doing Some tutorial stuff'
-    }
-  ];
-
-  currentUser="simon";
+  messages=[];
+  to;
+  currentUser="+905389640431"; //Değiştir.
   newMessage='';
   @ViewChild(IonContent,null) content: IonContent;
 
-  constructor(private keyboard:Keyboard,private rdb:RealtimedbService) { 
+  constructor(private keyboard:Keyboard,private rdb:RealtimedbService,private route:ActivatedRoute) { 
+    this.to=this.route.snapshot.paramMap.get('to');
+    console.log("Kime",this.to); 
+  }
+  resolve(route: ActivatedRouteSnapshot) {
+    let id = route.paramMap.get('id');
   }
 
   ngOnInit() {
@@ -44,7 +35,7 @@ export class MessagesPage implements OnInit {
   }
 
   sendMessage(){
-    this.rdb.sendMessage("+905337750027","+905389640431","Merhaba Nasılsın").then(()=>{
+    this.rdb.sendMessage(this.to,this.currentUser,this.newMessage).then(()=>{
       this.messages.push({
         user:'simon',
         createdAt: new Date().getTime(),

@@ -48,7 +48,7 @@
     <ion-list>
       <h3>Uygulamayı Kullanan Kişilerin</h3>
       <p *ngIf="appContacts.length==0">Uygulamayı Kullanan Arakadaşın Yok</p>
-      <ion-item *ngFor="let appContact of appContacts" routerLink="/chat/messages">
+      <ion-item *ngFor="let appContact of appContacts" routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}">
         <ion-avatar slot="start">
             <img src="../../../assets/dummy_pic.png">
         </ion-avatar>

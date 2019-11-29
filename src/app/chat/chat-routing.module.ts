@@ -6,7 +6,7 @@ const routes: Routes = [
   { path: '',  redirectTo:'main', pathMatch:'full' },
   { path: 'main', loadChildren: './main/main.module#MainPageModule' },
   { path: 'contact', loadChildren: './contact/contact.module#ContactPageModule' },
-  { path: 'messages', loadChildren: './messages/messages.module#MessagesPageModule' },
+  { path: 'messages/:to', loadChildren: './messages/messages.module#MessagesPageModule' },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'chats', loadChildren: './chats/chats.module#ChatsPageModule' },
 ];
