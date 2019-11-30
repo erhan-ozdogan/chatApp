@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
-import {user} from '../../services/SQLite/sqlite.service';
 import {AuthenticationService} from '../../services/authentication/authentication.service';
 import { Platform } from "@ionic/angular";
 
@@ -14,7 +13,7 @@ import { Platform } from "@ionic/angular";
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  user:user={username:"erhan11",
+  user={username:"erhan11",
               name:"erhan",
               password:"123",
               surname:"ozdogan",
@@ -33,15 +32,6 @@ registerForm:FormGroup;
 
   ngOnInit() {
 
-   /* this.plt.ready().then(()=>{
-      this.auth.isRegister().then(res =>{
-        console.log(res);
-        if(res){
-          this.goto();
-        }
-
-      });
-    });*/
     
     this.registerForm =this.fb.group({
       name: ['',Validators.required],
@@ -53,9 +43,7 @@ registerForm:FormGroup;
 
     });
   }
-  goto(){
-    this.router.navigate(['chat/main']);
-  }
+
   register(){
     console.log(this.registerForm.value);
     this.user=this.registerForm.value;

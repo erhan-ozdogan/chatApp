@@ -3,6 +3,7 @@ import { NotificationService } from "../../services/notificationService/notifica
 import { AuthenticationService } from "../../services/authentication/authentication.service";
 import { Router } from "@angular/router";
 import { Platform } from "@ionic/angular";
+import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 
 @Component({
   selector: 'app-main',
@@ -11,7 +12,7 @@ import { Platform } from "@ionic/angular";
 })
 export class MainPage implements OnInit { 
 
-  constructor(private notificationService:NotificationService,private auth:AuthenticationService,private router:Router,private plt:Platform) {
+  constructor(private rdb:RealtimedbService,private notificationService:NotificationService,private auth:AuthenticationService,private router:Router,private plt:Platform) {
     
    }
 
@@ -25,6 +26,7 @@ export class MainPage implements OnInit {
 
       });
     });
+    this.rdb.listenForMessage();
 
 
   }

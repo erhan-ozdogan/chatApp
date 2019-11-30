@@ -2,15 +2,24 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
 import { AngularFireDatabase } from "@angular/fire/database";
 import {ContactServiceService} from '../../services/contactService/contact-service.service'
-import {user} from '../SQLite/sqlite.service'
 import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
 import { Observable } from 'rxjs';
 
+export interface user{
+  name:string,
+  surname:string,
+  username:string,
+  password:string,
+  phone:string
+}
 
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class FirestoreServiceService {
+
     contactsFound:Contact[]=[];
    userCollection:AngularFirestoreCollection<user>;
    users:Observable<user[]>;

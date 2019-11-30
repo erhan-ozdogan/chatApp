@@ -6,25 +6,10 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
 
 export interface message{
-  chatId:number,
-  to:number,
-  from:number,
-  date:Date,
+  to:string,
+  from:string,
+  createdAt:number,
   message:string
-}
-
-export interface user{
-  username:string,
-  name:string,
-  password:string,
-  surname:string,
-  phone:string,
-  
-}
-export interface chat{
-  chatId:number,
-  userId1:number,
-  userId2:number
 }
 
 @Injectable({
@@ -34,7 +19,7 @@ export class SQLiteService {
   private database:SQLiteObject;
   private dbReady:BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  users=new BehaviorSubject([]);
+  messages=new BehaviorSubject([]);
 
   constructor(private sqlite:SQLite,private plt:Platform,private sqlitePorter:SQLitePorter,private http:HttpClient) {
     this.plt.ready().then(() => {
@@ -53,7 +38,7 @@ export class SQLiteService {
      .subscribe(sql =>{
        this.sqlitePorter.importSqlToDb(this.database,sql)
        .then(_ => {
-         this.loadUsers();
+         //this.loadMessages(to,from);
          this.dbReady.next(true);
        })
        .catch(e => console.log(e));
@@ -62,26 +47,31 @@ export class SQLiteService {
    getDatabaseState(){
      return this.dbReady.asObservable();
    }
-   getUsers():Observable<user[]>{
-     return this.users.asObservable();
+   getMessages():Observable<message[]>{
+     return this.messages.asObservable();
    }
-  loadUsers(){
-    return this.database.executeSql('SELECT * FROM user',[]).then(data => {
-      let users:user[]=[];
+  loadMessages(to,from){
+    return this.database.executeSql('SELECT * FROM messages2 WHERE (mto= ? and mfrom= ?) or (mto= ? and mfrom=?) ',[to,from,from,to]).then(data => {
+      let messages:message[]=[];
       if(data.rows.length>0){
         for(let i=0; i<data.rows.length;i++){
-          users.push({
-            username:data.rows.item(i).username,
-            name:data.rows.item(i).name,
-            surname:data.rows.item(i).surname,
-            phone:data.rows.item(i).phone,
-            password:data.rows.item(i).password,
-            
+          messages.push({
+            to:data.rows.item(i).mto,
+            from:data.rows.item(i).mfrom,
+            createdAt:data.rows.item(i).createdAt,
+            message:data.rows.item(i).mmessage,            
           });
         }
       }
-      this.users.next(users);
+      console.log(messages);
+      this.messages.next(messages);
     })
+  }
+  addMessage(msg:message){
+    let sql="INSERT INTO messages2 VALUES(?,?,?,?);"
+    this.database.executeSql(sql,[msg.to,msg.from,msg.message,msg.createdAt]).then(res=>{
+      console.log("Mesaj Eklendi");
+    },error=>{console.log(error)})
   }
 
 

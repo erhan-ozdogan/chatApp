@@ -10,16 +10,16 @@
 <ion-content>
 <ion-grid>
   <ion-row *ngFor="let message of messages">
-    <ion-col size="9" *ngIf="currentUser !== message.user" class="message other-message">
-      <b>{{message.user}}</b> <br>
+    <ion-col size="9" *ngIf="from !== message.from" class="message other-message">
+      <b>{{message.from}}</b> <br>
       <span>{{message.msg}}</span>
-      <div class="time" text-right><br>
+      <div class="time"><br>
       {{ message.createdAt |date:'short' }}</div>
     </ion-col>
-    <ion-col offset="3" size="9" *ngIf="currentUser == message.user" class="message my-message">
-        <b>{{message.user}}</b> <br>
-        <span>{{message.msg}}</span>
-        <div class="time" text-right><br>
+    <ion-col offset="3" size="9" *ngIf="from == message.from" class="message my-message">
+        <b>{{message.from}}</b> <br>
+        <span>{{message.message}}</span>
+        <div class="time"t><br>
         {{ message.createdAt |date:'short' }}</div>
       </ion-col>
   </ion-row>
