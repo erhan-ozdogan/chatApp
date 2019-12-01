@@ -63,7 +63,6 @@ export class SQLiteService {
           });
         }
       }
-      console.log(messages);
       this.messages.next(messages);
     })
   }

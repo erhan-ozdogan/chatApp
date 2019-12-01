@@ -48,7 +48,7 @@ registerForm:FormGroup;
     console.log(this.registerForm.value);
     this.user=this.registerForm.value;
     this.fbService.addUser(this.user).then(()=>{
-      this.auth.writeLocal();
+      this.auth.writeLocal(this.user.phone);
       this.router.navigate(['chat/main']);
           
     });

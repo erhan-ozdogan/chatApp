@@ -5,6 +5,7 @@ import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 import { Resolve, ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
 import { SQLiteService,message } from "../../services/SQLite/sqlite.service";
+import { AuthenticationService } from "../../services/authentication/authentication.service";
 
 
 
@@ -26,10 +27,11 @@ export class MessagesPage implements OnInit {
   constructor(private keyboard:Keyboard,
               private rdb:RealtimedbService,
               private route:ActivatedRoute,
-              private sqliteService:SQLiteService) { 
+              private sqliteService:SQLiteService,
+              private auth:AuthenticationService) { 
 
     this.to=this.route.snapshot.paramMap.get('to');
-    console.log("Kime",this.to); 
+    console.log("Mesaj Sayfası:"+this.to); 
   }
 
   resolve(route: ActivatedRouteSnapshot) {
@@ -37,7 +39,7 @@ export class MessagesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.loadMessages()
+    this.auth.getUser().then(res=>{this.from=res;this.loadMessages()})
     window.addEventListener('keyboardWillShow', (event) => {
       this.content.scrollToBottom(200);
   });
@@ -70,7 +72,7 @@ export class MessagesPage implements OnInit {
         this.sqliteService.getMessages().subscribe(messages =>{
           this.messages=messages;
         })
-        console.log("Mesajlar Alindi");
+        console.log("loadMessages():Mesajlar Alindi");
       }
     })
   }

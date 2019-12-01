@@ -30,16 +30,12 @@ export class FirestoreServiceService {
 
   }
   addUser(user:user){
-   this.userCollection.doc(user.phone).get().subscribe(result=>{
-     console.log(result.exists);
-   })
    let x= this.userCollection.doc(user.phone).set(user);
    return x;
   }
   checkUser(){
     //kişi listesinden telefon numaralarını al firebaseden alınan kişilerle kontolet eşleşenleri döndür
    // this.getUser();
-    console.log("checkUser");
     this.contactsFound.forEach(contact => {
       this.userCollection.doc(contact.phoneNumbers[0].value).get().subscribe(docSnapshot =>{
           if(docSnapshot.exists){
@@ -52,12 +48,11 @@ export class FirestoreServiceService {
 
   }
   getUser(){
-    console.log("Kullanıcılar Alınıyor");
+    console.log("getUser():Kullanıcılar Alınıyor");
     this.contacts.getContacts().then((contacts:Contact[]) =>{
       this.contactsFound=contacts;
       this.contactsFound.forEach(contact => {
         contact.phoneNumbers[0].value=this.formatPhone(contact.phoneNumbers[0].value);
-        console.log(contact.phoneNumbers[0].value);
         this.userCollection.doc(contact.phoneNumbers[0].value).get().subscribe(docSnapshot =>{
             if(docSnapshot.exists){
               this.appContacts.push(contact);
@@ -65,7 +60,7 @@ export class FirestoreServiceService {
         })
       });
     })
-    console.log("Kullanıcılar Alındı");
+    console.log("getUser():Kullanıcılar Alındı");
     return this.appContacts;
   }
   formatPhone(number:String){

@@ -18,7 +18,6 @@ export class AuthenticationService {
     });
   }
   checkIsRegister(){
-    
     this.storage.get("register").then(res =>{
       if(res){
         this.registerAuth.next(true);
@@ -28,11 +27,15 @@ export class AuthenticationService {
   isRegister(){
     return this.storage.get("register");
   }
-  writeLocal(){
+  writeLocal(user:string){
     this.storage.set("register","true").then(()=>{
       this.registerAuth.next(true);
-      console.log("Locale Yazıldı");
+      console.log("writeLocal():Locale Yazıldı");
     })
+    this.storage.set("user",user)
     
+  }
+  getUser(){
+    return this.storage.get("user");
   }
 }

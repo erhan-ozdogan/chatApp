@@ -19,14 +19,15 @@ export class MainPage implements OnInit {
   ngOnInit() {
       this.plt.ready().then(()=>{
       this.auth.isRegister().then(res =>{
-        console.log(res);
+        console.log("Kullanıcı Girisi:"+res);
         if(!res){
           this.goto();
+        }else{
+          this.rdb.listenForMessage(true);
         }
 
       });
     });
-    this.rdb.listenForMessage();
 
 
   }

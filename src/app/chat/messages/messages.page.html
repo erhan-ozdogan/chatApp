@@ -12,7 +12,7 @@
   <ion-row *ngFor="let message of messages">
     <ion-col size="9" *ngIf="from !== message.from" class="message other-message">
       <b>{{message.from}}</b> <br>
-      <span>{{message.msg}}</span>
+      <span>{{message.message}}</span>
       <div class="time"><br>
       {{ message.createdAt |date:'short' }}</div>
     </ion-col>

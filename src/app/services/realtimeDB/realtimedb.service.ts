@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { message } from "../SQLite/sqlite.service";
 import { SQLiteService } from "../SQLite/sqlite.service";
-import { MessagesPage } from "../../chat/messages/messages.page";
-import { MessagesPageModule } from 'src/app/chat/messages/messages.module';
-import { BehaviorSubject } from 'rxjs';
+import { AuthenticationService } from "../authentication/authentication.service";
 
 export interface fbmsg{
   from:string,
@@ -25,8 +23,11 @@ export class RealtimedbService {
     message:''
   }
   incomemsg:fbmsg;
+  currentUser;
 
-  constructor(public rdb: AngularFireDatabase,private sqliteService:SQLiteService) { }
+  constructor(public rdb: AngularFireDatabase,private sqliteService:SQLiteService,private auth:AuthenticationService) { 
+    this.auth.getUser().then(res =>{this.currentUser=res;console.log("console",res)});
+  }
 
   sendMessage(to:String,from:String,message:String,createdAt:number){
     let url='/messages/'+to;
@@ -36,22 +37,38 @@ export class RealtimedbService {
       createdAt:createdAt
     })
   }
+  // constructadaki üsttekiyle değiş
 // mainden bir boolean değer göndererek ilk alınanın veritabanına eklenmesi engellenebilir.
-  listenForMessage(){
-    this.rdb.list('/messages/+905389640431').valueChanges().subscribe(message =>{
-      if(message.length>0){
-      console.log(message[message.length-1]);
-      this.incomemsg=JSON.parse(JSON.stringify(message[message.length-1]));
-      this.msg={
-        to:'+905389640431', //current user
-        from:this.incomemsg.from,
-        message:this.incomemsg.message,
-        createdAt:this.incomemsg.createdAt
+//mainde ilk çağırıldığında mesajları çekiyor bu yüzden son mesajı tekrar sqlit db ye kayıt ediyor buda çift mesaja neden oluyor
+  listenForMessage(isFirstTime){
+    let ft=isFirstTime;
+    this.auth.getUser().then(res=>{
+      this.currentUser=res;
+      this.rdb.list('/messages/'+this.currentUser).valueChanges().subscribe(message =>{
+        console.log('/messages/'+this.currentUser);
+        console.log(message.length);
+        if(message.length>0){
+        console.log("ListenForMessage():"+message[message.length-1]);
+        this.incomemsg=JSON.parse(JSON.stringify(message[message.length-1]));
+        this.msg={
+          to:this.currentUser, //current user
+          from:this.incomemsg.from,
+          message:this.incomemsg.message,
+          createdAt:this.incomemsg.createdAt
+        }
+        if(ft!=true){
+          console.log("Alınan Mesaj:"+this.msg.message);
+          this.sqliteService.addMessage(this.msg);
+        }
       }
-      this.sqliteService.addMessage(this.msg);
-    }
-    },error=>{console.log(error)}
-    );}
+      ft=false;
+      
+      },error=>{console.log(error)}
+      );
+    })
+   }
+  
+
   
 
 
