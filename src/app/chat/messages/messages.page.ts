@@ -39,11 +39,27 @@ export class MessagesPage implements OnInit {
   }
 
   ngOnInit() {
-    this.auth.getUser().then(res=>{this.from=res;this.loadMessages()})
+    this.auth.getUser().then(res=>{
+      this.from=res;this.loadMessages()
+      this.rdb.isNotification=false;
+      this.rdb.chattingUser=this.to;
+      this.rdb.getAdd().subscribe(res=>{
+        this.messages.push(res);
+        this.content.scrollToBottom(1000);
+      });
+    })
     window.addEventListener('keyboardWillShow', (event) => {
-      this.content.scrollToBottom(200);
+      this.content.scrollToBottom(400);
   });
+
   }
+  ionViewDidLeave(){
+    console.log("Erhan");
+    this.rdb.isNotification=true;
+    this.rdb.chattingUser="null";
+
+  }
+
 
   sendMessage(){
     let createdAt=new Date().getTime();
@@ -62,6 +78,7 @@ export class MessagesPage implements OnInit {
       });
     }) 
   }
+ 
   
 
   loadMessages(){

@@ -9,11 +9,11 @@ export class NotificationService {
 
   constructor(private notification:LocalNotifications) { }
 
-  createNotification(){
+  createNotification(from,message){
     this.notification.schedule({
       id:1,
-      title:"This is a Created Notification",
-      text:"Hemen geliyorum",
+      title:from,
+      text:message,
 
     });
     console.log("Created");

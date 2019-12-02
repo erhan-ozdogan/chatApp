@@ -4,6 +4,7 @@ import { AuthenticationService } from "../../services/authentication/authenticat
 import { Router } from "@angular/router";
 import { Platform } from "@ionic/angular";
 import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
+import { BackgroundMode } from "@ionic-native/background-mode/ngx";
 
 @Component({
   selector: 'app-main',
@@ -12,7 +13,12 @@ import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service"
 })
 export class MainPage implements OnInit { 
 
-  constructor(private rdb:RealtimedbService,private notificationService:NotificationService,private auth:AuthenticationService,private router:Router,private plt:Platform) {
+  constructor(private rdb:RealtimedbService,
+              private notificationService:NotificationService,
+              private auth:AuthenticationService,
+              private router:Router,
+              private plt:Platform,
+              private bgMode:BackgroundMode) {
     
    }
 
@@ -25,6 +31,7 @@ export class MainPage implements OnInit {
         }else{
           this.rdb.listenForMessage(true);
         }
+        this.bgMode.enable();
 
       });
     });
@@ -33,10 +40,5 @@ export class MainPage implements OnInit {
   }
   goto(){
     this.router.navigate(['chat/login']);
-  }
-
-
-  getNotify(){
-  this.notificationService.createNotification();
   }
 }

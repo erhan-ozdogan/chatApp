@@ -3,6 +3,8 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { message } from "../SQLite/sqlite.service";
 import { SQLiteService } from "../SQLite/sqlite.service";
 import { AuthenticationService } from "../authentication/authentication.service";
+import { BehaviorSubject } from 'rxjs';
+import { NotificationService } from "../../services/notificationService/notification.service";
 
 export interface fbmsg{
   from:string,
@@ -24,8 +26,12 @@ export class RealtimedbService {
   }
   incomemsg:fbmsg;
   currentUser;
+  add=new BehaviorSubject<message>(null);
+  isNotification=true;
+  chattingUser;
 
-  constructor(public rdb: AngularFireDatabase,private sqliteService:SQLiteService,private auth:AuthenticationService) { 
+  constructor(public rdb: AngularFireDatabase,private sqliteService:SQLiteService,private auth:AuthenticationService
+              ,private notificationService:NotificationService) { 
     this.auth.getUser().then(res =>{this.currentUser=res;console.log("console",res)});
   }
 
@@ -57,8 +63,15 @@ export class RealtimedbService {
           createdAt:this.incomemsg.createdAt
         }
         if(ft!=true){
+          console.log(this.msg.from!=this.chattingUser);
+          console.log(this.chattingUser);
           console.log("Alınan Mesaj:"+this.msg.message);
           this.sqliteService.addMessage(this.msg);
+          this.add.next(this.msg);
+          if(this.isNotification && this.msg.from!=this.chattingUser){
+            this.notificationService.createNotification(this.msg.from,this.msg.message);
+
+          }
         }
       }
       ft=false;
@@ -66,6 +79,10 @@ export class RealtimedbService {
       },error=>{console.log(error)}
       );
     })
+   }
+
+   getAdd():BehaviorSubject<message>{
+     return this.add;
    }
   
 

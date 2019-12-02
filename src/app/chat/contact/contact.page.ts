@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactServiceService } from "../../services/contactService/contact-service.service";
 import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
-import { Platform } from "@ionic/angular";
-import { AuthenticationService } from "../../services/authentication/authentication.service";
-import { Router } from "@angular/router";
-import {BluetoothService} from '../../services/bluetooth/bluetooth.service'
 import { BleService } from "../../services/BLE/ble.service";
 import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -35,7 +31,8 @@ export class ContactPage implements OnInit {
               private sanitizer:DomSanitizer,
               private loadingController:LoadingController) { }
 
-  ngOnInit() {   
+  ngOnInit() {  
+    this.appContacts=[];
     this.loadAppContact();
   }
 

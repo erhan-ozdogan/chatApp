@@ -4,8 +4,6 @@
       <ion-back-button defaultHref="/chat/main"></ion-back-button>
     </ion-buttons>
     <ion-button (click)="getDevices()" slot="end"><ion-icon name="Bluetooth"></ion-icon>Tara</ion-button>
-    <ion-button (click)="loadAppContact()" slot="end"><ion-icon name="Contacts"></ion-icon>App Contacts</ion-button>
-
   </ion-toolbar>
 </ion-header>
 
@@ -45,8 +43,7 @@
       </ion-card-content>
     </ion-list>
 
-    <ion-list>
-      <h3>Uygulamayı Kullanan Kişilerin</h3>
+    <!--<ion-list> 
       <p *ngIf="appContacts.length==0">Uygulamayı Kullanan Arakadaşın Yok</p>
       <ion-item *ngFor="let appContact of appContacts" routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}">
         <ion-avatar slot="start">
@@ -54,7 +51,25 @@
         </ion-avatar>
         <ion-label>{{appContact.displayName}}</ion-label>
       </ion-item>
-    </ion-list>
+    </ion-list>-->
+
+    <ion-grid>
+        <h3>Uygulamayı Kullanan Kişilerin</h3>
+      <ion-row class="contactRow">
+        <ion-col  size="6" *ngFor="let appContact of appContacts">
+          <ion-card routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}" >
+            <ion-card-header>
+            <ion-img src="../../../assets/dummy_pic.png"></ion-img>
+            <ion-card-title>{{appContact.displayName}}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              {{appContact.phoneNumbers[0].value}}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
 
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button (click)="loadContact()">

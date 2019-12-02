@@ -48,6 +48,7 @@ export class FirestoreServiceService {
 
   }
   getUser(){
+    this.appContacts=[];
     console.log("getUser():Kullanıcılar Alınıyor");
     this.contacts.getContacts().then((contacts:Contact[]) =>{
       this.contactsFound=contacts;
