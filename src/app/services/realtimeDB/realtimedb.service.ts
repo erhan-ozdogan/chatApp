@@ -3,8 +3,9 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { message } from "../SQLite/sqlite.service";
 import { SQLiteService } from "../SQLite/sqlite.service";
 import { AuthenticationService } from "../authentication/authentication.service";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
 import { NotificationService } from "../../services/notificationService/notification.service";
+import { utf8Encode } from '@angular/compiler/src/util';
 
 export interface fbmsg{
   from:string,
@@ -79,6 +80,10 @@ export class RealtimedbService {
       },error=>{console.log(error)}
       );
     })
+   }
+   getOfflineMessages(time){
+     console.log(this.currentUser);
+      return this.rdb.list("/messages/"+this.currentUser,ref=> ref.orderByChild('createdAt').startAt(time)).valueChanges();
    }
 
    getAdd():BehaviorSubject<message>{

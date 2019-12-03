@@ -1,8 +1,8 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>{{to}}</ion-title>
+<ion-header no-border>
+  <ion-toolbar class="messageToolbar">
+    <ion-title>{{contactName}}</ion-title>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/chat/main"></ion-back-button>
+      <ion-back-button color="light" defaultHref="/chat/contact"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -10,14 +10,12 @@
 <ion-content>
 <ion-grid>
   <ion-row *ngFor="let message of messages">
-    <ion-col size="9" *ngIf="from !== message.from" class="message other-message">
-      <b>{{message.from}}</b> <br>
+    <ion-col size="7" *ngIf="from !== message.from" class="message other-message">
       <span>{{message.message}}</span>
       <div class="time"><br>
       {{ message.createdAt |date:'short' }}</div>
     </ion-col>
-    <ion-col offset="3" size="9" *ngIf="from == message.from" class="message my-message">
-        <b>{{message.from}}</b> <br>
+    <ion-col offset="5" size="7" *ngIf="from == message.from" class="message my-message">
         <span>{{message.message}}</span>
         <div class="time"t><br>
         {{ message.createdAt |date:'short' }}</div>
@@ -27,10 +25,10 @@
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar color="light">
+  <ion-toolbar class="messageFooToolbar">
     <ion-row align-items-center no-padding>
       <ion-col size="10">
-          <textarea autosize maxRows="3" [(ngModel)]="newMessage" class="messageInput"></textarea>
+          <textarea placeholder="Type Here !" autosize maxRows="3" [(ngModel)]="newMessage" class="messageInput"></textarea>
       </ion-col>
       <ion-col size=2>
         <ion-button expand="block" fill="clear" color="primary" [disabled]="newMessage==''" class="messageSendButton" (click)="sendMessage()">

@@ -1,3 +1,47 @@
 .itemcontent{
     transition:2s ease-in-out ;
 }
+ion-header::after{
+    --background-image:none;
+}
+.contactHeader{
+    --background: #204459;
+}
+ion-content{
+    --background: #204459;
+    --color:#7692a2;
+}
+.appContactCard{
+    --background:#305f7a;
+}
+.appContactImage{
+    border-radius: 100px;
+    width: 50%;
+
+    margin-bottom:20px ;
+}
+.cardTitle{
+    --color:#EEE7E3;
+}
+.cardContent{
+    color:#7692a2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 110%;
+}
+.fabButton{
+    --background:#7692a2;
+}
+.contacts{
+    --background:#305f7a;
+    --color:#EEE7E3;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14pt;
+
+}
+.detail{
+    --background:#305f7a;
+}
+ion-item-group{
+   --background:#305f7a;
+
+}

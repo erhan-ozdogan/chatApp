@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AutosizeModule } from "ngx-autosize";
 import { IonContent } from '@ionic/angular';
 import { Keyboard } from '@ionic-native/keyboard/ngx';
 import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
-import { Resolve, ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
+import {  ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
 import { SQLiteService,message } from "../../services/SQLite/sqlite.service";
 import { AuthenticationService } from "../../services/authentication/authentication.service";
+import { FirestoreServiceService } from "../../services/firebase/firestore-service.service";
 
 
 
@@ -17,18 +17,19 @@ import { AuthenticationService } from "../../services/authentication/authenticat
 })
 export class MessagesPage implements OnInit {
 
-  //messages=[];
   messages:message[]=[];
   to;
-  from="+905389640431"; //Değiştir. current user
+  from; //current user
   newMessage='';
+  contactName;
   @ViewChild(IonContent,null) content: IonContent;
 
-  constructor(private keyboard:Keyboard,
+  constructor(
               private rdb:RealtimedbService,
               private route:ActivatedRoute,
               private sqliteService:SQLiteService,
-              private auth:AuthenticationService) { 
+              private auth:AuthenticationService,
+              private firestroreDb:FirestoreServiceService) { 
 
     this.to=this.route.snapshot.paramMap.get('to');
     console.log("Mesaj Sayfası:"+this.to); 
@@ -39,10 +40,13 @@ export class MessagesPage implements OnInit {
   }
 
   ngOnInit() {
+   
     this.auth.getUser().then(res=>{
-      this.from=res;this.loadMessages()
+      this.from=res;
+      this.loadMessages();
       this.rdb.isNotification=false;
       this.rdb.chattingUser=this.to;
+      this.findToName();
       this.rdb.getAdd().subscribe(res=>{
         this.messages.push(res);
         this.content.scrollToBottom(1000);
@@ -54,11 +58,15 @@ export class MessagesPage implements OnInit {
 
   }
   ionViewDidLeave(){
-    console.log("Erhan");
     this.rdb.isNotification=true;
     this.rdb.chattingUser="null";
 
   }
+  findToName(){
+    let contacts=this.firestroreDb.contactsFound;
+    this.contactName=contacts.find(x=>x.phoneNumbers[0].value==this.to).displayName;
+  }
+
 
 
   sendMessage(){
@@ -84,10 +92,12 @@ export class MessagesPage implements OnInit {
   loadMessages(){
     this.sqliteService.getDatabaseState().subscribe(ready => {
       if(ready){
-
         this.sqliteService.loadMessages(this.to,this.from);
         this.sqliteService.getMessages().subscribe(messages =>{
           this.messages=messages;
+          setTimeout(()=>{
+            this.content.scrollToBottom(200);
+          });
         })
         console.log("loadMessages():Mesajlar Alindi");
       }

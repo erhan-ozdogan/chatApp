@@ -6,13 +6,29 @@
 
 }
 .other-message{
-    background-color: var(--ion-color-tertiary);
+    //background-color: var(--ion-color-tertiary);
+    background-color: #353846;
     color:#fff;
+    border-radius: 20px 20px 20px 0px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 14pt;
+
+
 }
 
 .my-message{
-    background-color: var(--ion-color-secondary);
+    //background-color: var(--ion-color-secondary);
+    background-color: #2d3285;
     color:#fff;
+    border-radius: 20px 20px 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 14pt;
+    
+
 
 }
 .time{
@@ -23,16 +39,35 @@
 }
 .messageInput{
     width: 100%;
-    border: 1px solid var(--ion-color-medium);
-    border-radius: 10px;
-    background:#fff;
+    border-radius: 20px;
+    border:none;
+    background:#FBEAEB;
     resize: none;
     padding-left: 10px;
     padding-right: 10px;
     max-height: 100px;
+    color: #2F3C7E;
+    text-decoration: none;
+    outline: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 500;
+    letter-spacing: 1px;
+    font-size: 14pt;
+
 }
 .messageSendButton{
     --padding-start:0.5em;
     --padding-end:0.5em;
 
+}
+ion-content{
+    --background:#FBEAEB;
+}
+.messageToolbar{
+    --color: #FBEAEB;
+    --background:#2F3C7E;
+
+}
+.messageFooToolbar{
+    --background:#2F3C7E;
 }

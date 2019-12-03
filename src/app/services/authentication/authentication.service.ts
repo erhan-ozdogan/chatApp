@@ -33,7 +33,16 @@ export class AuthenticationService {
       console.log("writeLocal():Locale Yazıldı");
     })
     this.storage.set("user",user)
-    
+  }
+  writeLastOnlineTime(){
+    let x=new Date().getTime()
+    this.storage.set("time",x).then(()=>{console.log("Son Görülme => "+x )})
+  }
+  removeLastOnlineTime(){
+    this.storage.remove("time").then(()=>{console.log("Son Görülme Silindi")});
+  }
+  getLastOnlineTime(){
+    return this.storage.get("time");
   }
   getUser(){
     return this.storage.get("user");
