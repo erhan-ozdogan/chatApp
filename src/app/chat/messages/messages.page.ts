@@ -6,6 +6,7 @@ import {  ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
 import { SQLiteService,message } from "../../services/SQLite/sqlite.service";
 import { AuthenticationService } from "../../services/authentication/authentication.service";
 import { FirestoreServiceService } from "../../services/firebase/firestore-service.service";
+import { Subscription } from 'rxjs';
 
 
 
@@ -22,6 +23,7 @@ export class MessagesPage implements OnInit {
   from; //current user
   newMessage='';
   contactName;
+  msgSub;
   @ViewChild(IonContent,null) content: IonContent;
 
   constructor(
@@ -47,19 +49,23 @@ export class MessagesPage implements OnInit {
       this.rdb.isNotification=false;
       this.rdb.chattingUser=this.to;
       this.findToName();
-      this.rdb.getAdd().subscribe(res=>{
+      this.msgSub=this.rdb.getAdd().subscribe(res=>{
         this.messages.push(res);
-        this.content.scrollToBottom(1000);
+        setTimeout(()=>{this.content.scrollToBottom(200),300});
       });
+    
     })
     window.addEventListener('keyboardWillShow', (event) => {
       this.content.scrollToBottom(400);
   });
 
+  
+
   }
   ionViewDidLeave(){
     this.rdb.isNotification=true;
     this.rdb.chattingUser="null";
+    this.msgSub.unsubscribe();
 
   }
   findToName(){

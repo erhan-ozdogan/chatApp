@@ -44,8 +44,6 @@ export class RealtimedbService {
       createdAt:createdAt
     })
   }
-  // constructadaki üsttekiyle değiş
-// mainden bir boolean değer göndererek ilk alınanın veritabanına eklenmesi engellenebilir.
 //mainde ilk çağırıldığında mesajları çekiyor bu yüzden son mesajı tekrar sqlit db ye kayıt ediyor buda çift mesaja neden oluyor
   listenForMessage(isFirstTime){
     let ft=isFirstTime;
@@ -84,6 +82,7 @@ export class RealtimedbService {
    getOfflineMessages(time){
      console.log(this.currentUser);
       return this.rdb.list("/messages/"+this.currentUser,ref=> ref.orderByChild('createdAt').startAt(time)).valueChanges();
+ 
    }
 
    getAdd():BehaviorSubject<message>{

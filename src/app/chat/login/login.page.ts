@@ -49,7 +49,7 @@ registerForm:FormGroup;
     this.user=this.registerForm.value;
     this.fbService.addUser(this.user).then(()=>{
       this.auth.writeLocal(this.user.phone);
-      this.router.navigate(['chat/main']);
+      this.router.navigateByUrl('chat/contact');
           
     });
   }

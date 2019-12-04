@@ -10,6 +10,8 @@ import { Router } from "@angular/router";
 import { Platform } from "@ionic/angular";
 import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
+import { SQLiteService, message } from "../../services/SQLite/sqlite.service";
+import { Subscription } from 'rxjs';
 
 
 
@@ -31,6 +33,9 @@ export class ContactPage implements OnInit {
   loading;
   lastOnlineTime;
   unSeenMessages;
+  currentUser;
+  db:Subscription;
+  continue=false;
 
 
   constructor(private contactService:ContactServiceService,
@@ -41,9 +46,14 @@ export class ContactPage implements OnInit {
               private auth:AuthenticationService,
               private router:Router,
               private plt:Platform,
-              private bgm:BackgroundMode) { }
+              private bgm:BackgroundMode,
+              private sqliteService:SQLiteService
+              ) { 
+                console.log("Girildi");
+              }
 
   ngOnInit() {  
+    
     this.auth.getLastOnlineTime().then(res =>{
       this.lastOnlineTime=res;
       this.checkIsRegister();
@@ -59,31 +69,55 @@ export class ContactPage implements OnInit {
   }
 
   checkIsRegister(){
+
     console.log("Giris Kontrolü Yapılıyor.");
     this.plt.ready().then(()=>{
       this.auth.isRegister().then(res =>{
         console.log("Kullanıcı Girisi:"+res);
         if(!res){
           console.log("Giris Kontrolü Yapıldı");
+          this.continue=true;
           this.goto();
         }else{
-          console.log("Giris Kontrolü Yapıldı");
-          this.rdb.listenForMessage(true);
-          console.log(this.lastOnlineTime);
-          this.unSeenMessages=[];
-          this.rdb.getOfflineMessages(this.lastOnlineTime).subscribe(res=>{
-            this.unSeenMessages=res;
-            console.log("Unseen Messages",this.unSeenMessages);
-          });//unsubscribe edilmeli
-
-
+          
+          this.auth.getUser().then(res=>{
+            this.currentUser=res;
+            console.log("Giris Kontrolü Yapıldı");
+            this.rdb.listenForMessage(true);
+            console.log(this.lastOnlineTime);
+            this.unSeenMessages=[];
+            this.db=this.rdb.getOfflineMessages(this.lastOnlineTime).subscribe(res=>{
+              this.unSeenMessages=res;
+              console.log("Unseen Messages",this.unSeenMessages);
+              this.unSeenMessages.forEach(message => {
+                let msg={
+                  to:this.currentUser,
+                  from:message.from,
+                  createdAt:message.createdAt,
+                  message:message.message
+                }
+                this.sqliteService.addMessage(msg);
+                
+              });
+              this.db.unsubscribe();
+            });
+          
+          })
         }
       });
     });
   }
+  ionViewWillEnter(){
+    if(this.continue){
+      this.continue=false;
+      this.ngOnInit();
+    }
+  }
+
   goto(){
     this.router.navigate(['chat/login']);
   }
+ 
 
   revealNumber(contactId:number){
     console.log(contactId);
@@ -114,7 +148,7 @@ export class ContactPage implements OnInit {
     }
   }
   loadAppContact(){
-    this.presentLoading();
+    
     console.log("loadAppContact");
     this.appContacts=this.fs.getUser();
 
