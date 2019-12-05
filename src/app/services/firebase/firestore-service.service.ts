@@ -4,6 +4,7 @@ import { AngularFireDatabase } from "@angular/fire/database";
 import {ContactServiceService} from '../../services/contactService/contact-service.service'
 import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
 import { Observable } from 'rxjs';
+import {AuthenticationService  } from "../authentication/authentication.service";
 
 export interface user{
   name:string,
@@ -24,7 +25,7 @@ export class FirestoreServiceService {
    userCollection:AngularFirestoreCollection<user>;
    users:Observable<user[]>;
    appContacts:Contact[]=[];
-  constructor(private db: AngularFirestore,private contacts:ContactServiceService,private rdb:AngularFireDatabase ) { 
+  constructor(private db: AngularFirestore,private contacts:ContactServiceService,private auth:AuthenticationService ) { 
     this.userCollection = db.collection<user>('afadApp');
     this.users=this.userCollection.valueChanges();
 

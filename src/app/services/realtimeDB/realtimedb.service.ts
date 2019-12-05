@@ -50,10 +50,7 @@ export class RealtimedbService {
     this.auth.getUser().then(res=>{
       this.currentUser=res;
       this.rdb.list('/messages/'+this.currentUser).valueChanges().subscribe(message =>{
-        console.log('/messages/'+this.currentUser);
-        console.log(message.length);
         if(message.length>0){
-        console.log("ListenForMessage():"+message[message.length-1]);
         this.incomemsg=JSON.parse(JSON.stringify(message[message.length-1]));
         this.msg={
           to:this.currentUser, //current user
@@ -62,12 +59,13 @@ export class RealtimedbService {
           createdAt:this.incomemsg.createdAt
         }
         if(ft!=true){
-          console.log(this.msg.from!=this.chattingUser);
-          console.log(this.chattingUser);
           console.log("Alınan Mesaj:"+this.msg.message);
           this.sqliteService.addMessage(this.msg);
+          this.auth.writeLastOnlineTime();
+          if(this.msg.from==this.chattingUser){
           this.add.next(this.msg);
-          if(this.isNotification && this.msg.from!=this.chattingUser){
+          }
+          if(this.msg.from!=this.chattingUser){
             this.notificationService.createNotification(this.msg.from,this.msg.message);
 
           }

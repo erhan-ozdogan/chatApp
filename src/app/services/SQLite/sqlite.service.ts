@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Platform } from '@ionic/angular';
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from "../authentication/authentication.service";
 
 export interface message{
   to:string,
@@ -21,7 +22,7 @@ export class SQLiteService {
 
   messages=new BehaviorSubject([]);
 
-  constructor(private sqlite:SQLite,private plt:Platform,private sqlitePorter:SQLitePorter,private http:HttpClient) {
+  constructor(private sqlite:SQLite,private plt:Platform,private sqlitePorter:SQLitePorter,private http:HttpClient,private auth:AuthenticationService) {
     this.plt.ready().then(() => {
       this.sqlite.create({
         name:'afadApp.db',

@@ -58,8 +58,9 @@
         <h6>CONTACTS ({{appContacts.length}})</h6>
       <ion-row class="contactRow">
         <ion-col  size="6" *ngFor="let appContact of appContacts">
-          <ion-card class="appContactCard" routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}" >
+          <ion-card (click)="clear_note(appContact.phoneNumbers[0].value)" class="appContactCard" routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}" >
             <ion-card-header >
+            <ion-badge *ngIf="appContact.note=='true' && clear" color="primary">!</ion-badge>
             <img class="appContactImage" src="../../../assets/dummy_pic.png">
             <ion-card-title class="cardTitle">{{appContact.displayName}}</ion-card-title>
             </ion-card-header>

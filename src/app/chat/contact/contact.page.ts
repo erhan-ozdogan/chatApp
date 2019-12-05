@@ -36,6 +36,7 @@ export class ContactPage implements OnInit {
   currentUser;
   db:Subscription;
   continue=false;
+  clear=false;
 
 
   constructor(private contactService:ContactServiceService,
@@ -97,9 +98,12 @@ export class ContactPage implements OnInit {
                   message:message.message
                 }
                 this.sqliteService.addMessage(msg);
+                this.appContacts.find(x=> x.phoneNumbers[0].value==msg.from).note="true";
                 
               });
               this.db.unsubscribe();
+              this.clear=true;
+              
             });
           
           })
@@ -107,6 +111,10 @@ export class ContactPage implements OnInit {
       });
     });
   }
+  clear_note(phone){
+    this.appContacts.find(x=> x.phoneNumbers[0].value==phone).note="false";
+  }
+  
   ionViewWillEnter(){
     if(this.continue){
       this.continue=false;

@@ -18,7 +18,6 @@ export class AuthenticationService {
     });
   }
   checkIsRegister(){
-  
 
     this.storage.get("register").then(res =>{
       if(res){
@@ -49,4 +48,5 @@ export class AuthenticationService {
   getUser(){
     return this.storage.get("user");
   }
+ 
 }
