@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactServiceService } from "../../services/contactService/contact-service.service";
-import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
-import { BleService } from "../../services/BLE/ble.service";
-import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Contact } from '@ionic-native/contacts/ngx';
+import { BleService } from "../services/BLE/ble.service";
 import { LoadingController } from '@ionic/angular';
-import { AuthenticationService } from "../../services/authentication/authentication.service";
 import { Router } from "@angular/router";
 import { Platform } from "@ionic/angular";
-import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 import { BackgroundMode } from '@ionic-native/background-mode/ngx';
-import { SQLiteService, message } from "../../services/SQLite/sqlite.service";
 import { Subscription } from 'rxjs';
+
+import { SQLiteService} from "../services/SQLite/sqlite.service";
+import { RealtimedbService } from "../services/realtimeDB/realtimedb.service";
+import { AuthenticationService } from "../services/authentication/authentication.service";
+import {FirestoreServiceService} from '../services/firebase/firestore-service.service';
+import { ContactServiceService } from "../services/contactService/contact-service.service";
+
+
+
+
 
 
 

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from "angularfire2/firestore";
-import { AngularFireDatabase } from "@angular/fire/database";
-import {ContactServiceService} from '../../services/contactService/contact-service.service'
-import { Contacts, Contact,ContactFieldType } from '@ionic-native/contacts/ngx';
+import { Contact } from '@ionic-native/contacts/ngx';
 import { Observable } from 'rxjs';
+
 import {AuthenticationService  } from "../authentication/authentication.service";
+import {ContactServiceService} from '../contactService/contact-service.service'
+
 
 export interface user{
   name:string,

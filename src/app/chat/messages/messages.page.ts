@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular';
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-import { RealtimedbService } from "../../services/realtimeDB/realtimedb.service";
 import {  ActivatedRouteSnapshot, ActivatedRoute  } from '@angular/router';
-import { SQLiteService,message } from "../../services/SQLite/sqlite.service";
-import { AuthenticationService } from "../../services/authentication/authentication.service";
-import { FirestoreServiceService } from "../../services/firebase/firestore-service.service";
-import { Subscription } from 'rxjs';
+
+import { SQLiteService,message } from "../services/SQLite/sqlite.service";
+import { AuthenticationService } from "../services/authentication/authentication.service";
+import { FirestoreServiceService } from "../services/firebase/firestore-service.service";
+import { RealtimedbService } from "../services/realtimeDB/realtimedb.service";
+
 
 
 

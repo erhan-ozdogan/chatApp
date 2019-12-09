@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Storage } from "@ionic/storage";
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@ionic/angular';
-import {CanActivate} from '@angular/router';
 
 
 @Injectable({
@@ -18,7 +17,6 @@ export class AuthenticationService {
     });
   }
   checkIsRegister(){
-
     this.storage.get("register").then(res =>{
       if(res){
         this.registerAuth.next(true);

@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { message } from "../SQLite/sqlite.service";
 import { SQLiteService } from "../SQLite/sqlite.service";
+import { BehaviorSubject} from 'rxjs';
+
+import { NotificationService } from "../notificationService/notification.service";
 import { AuthenticationService } from "../authentication/authentication.service";
-import { BehaviorSubject, VirtualTimeScheduler } from 'rxjs';
-import { NotificationService } from "../../services/notificationService/notification.service";
-import { utf8Encode } from '@angular/compiler/src/util';
+
 
 export interface fbmsg{
   from:string,

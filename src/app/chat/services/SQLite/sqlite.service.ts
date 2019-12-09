@@ -24,6 +24,7 @@ export class SQLiteService {
 
   constructor(private sqlite:SQLite,private plt:Platform,private sqlitePorter:SQLitePorter,private http:HttpClient,private auth:AuthenticationService) {
     this.plt.ready().then(() => {
+
       this.sqlite.create({
         name:'afadApp.db',
         location:'default'

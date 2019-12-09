@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import {FirestoreServiceService} from '../../services/firebase/firestore-service.service';
-import {AuthenticationService} from '../../services/authentication/authentication.service';
 import { Platform } from "@ionic/angular";
+
+import {AuthenticationService} from '../services/authentication/authentication.service';
+import {FirestoreServiceService} from '../services/firebase/firestore-service.service';
+
+
 
 
 
