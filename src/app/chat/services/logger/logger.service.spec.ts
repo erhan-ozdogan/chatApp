@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SQLiteService } from './sqlite.service';
+import { LoggerService } from './logger.service';
 
-describe('SQLiteService', () => {
+describe('LoggerService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SQLiteService = TestBed.get(SQLiteService);
+    const service: LoggerService = TestBed.get(LoggerService);
     expect(service).toBeTruthy();
   });
 });

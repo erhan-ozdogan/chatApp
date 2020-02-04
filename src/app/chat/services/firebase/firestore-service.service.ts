@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 
 import {AuthenticationService  } from "../authentication/authentication.service";
 import {ContactServiceService} from '../contactService/contact-service.service'
+import { LoggerService } from "../logger/logger.service";
+import * as firebase from 'firebase';
 
 
 export interface user{
@@ -26,33 +28,31 @@ export class FirestoreServiceService {
    userCollection:AngularFirestoreCollection<user>;
    users:Observable<user[]>;
    appContacts:Contact[]=[];
-  constructor(private db: AngularFirestore,private contacts:ContactServiceService,private auth:AuthenticationService ) { 
+  constructor(private db: AngularFirestore,private contacts:ContactServiceService,private logger:LoggerService ) { 
     this.userCollection = db.collection<user>('afadApp');
     this.users=this.userCollection.valueChanges();
 
   }
-  addUser(user:user){
-   let x= this.userCollection.doc(user.phone).set(user);
+  addUser(phone_number){
+    this.logger.log("Kullanıcı Firestore'a Eklendi");
+   let x= this.userCollection.doc(phone_number).set({phone:phone_number});
    return x;
   }
   checkUser(){
-    //kişi listesinden telefon numaralarını al firebaseden alınan kişilerle kontolet eşleşenleri döndür
-   // this.getUser();
     this.contactsFound.forEach(contact => {
       this.userCollection.doc(contact.phoneNumbers[0].value).get().subscribe(docSnapshot =>{
           if(docSnapshot.exists){
             this.appContacts.push(contact);
-            //Burada Sıkıntı Var
           }
       })
     });
     return this.appContacts;
 
   }
-  getUser(){
+   getUser():Promise<any>{
+    this.logger.log("Uygulamayı Kullanan Kişiler Alınıyor");
     this.appContacts=[];
-    console.log("getUser():Kullanıcılar Alınıyor");
-    this.contacts.getContacts().then((contacts:Contact[]) =>{
+     return this.contacts.getContacts().then((contacts:Contact[]) =>{
       this.contactsFound=contacts;
       this.contactsFound.forEach(contact => {
         contact.phoneNumbers[0].value=this.formatPhone(contact.phoneNumbers[0].value);
@@ -62,9 +62,9 @@ export class FirestoreServiceService {
             }
         })
       });
+      console.log("Kişiler Alındı.");
+
     })
-    console.log("getUser():Kullanıcılar Alındı");
-    return this.appContacts;
   }
   formatPhone(number:String){
     if(!number.startsWith('+')){
@@ -72,4 +72,9 @@ export class FirestoreServiceService {
     }
     return number.replace(/\s/g, '');
   }
+
+
+
+
+  
 }

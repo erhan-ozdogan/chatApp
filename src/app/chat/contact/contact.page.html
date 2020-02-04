@@ -1,10 +1,10 @@
 <ion-header no-border >
   <ion-toolbar class="contactHeader" >
     <ion-buttons slot="start" >
-     <!--- <ion-back-button color="light" defaultHref="/chat/main"></ion-back-button>-->
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
-   <!-- <ion-button (click)="getDevices()" slot="end"><ion-icon name="Bluetooth"></ion-icon>Tara</ion-button> -->
   </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
@@ -33,26 +33,6 @@
         </ion-label>
       </div>
     </ion-item>  
-    
-   <!--- <ion-list>
-      <h3>Yakınınızdaki Cihazlar</h3>
-      <p *ngIf="devices.length==0">Cihaz Yok Tekrar Tarayınız</p>
-      <ion-card-content ion-item *ngFor="let device of devices">
-        <p>{{device.name || 'Unnamed'}}</p>
-        <p>{{device.id}}</p>
-        <p> RSSI: {{device.rssi}}</p>
-      </ion-card-content>
-    </ion-list>-->
-
-    <!--<ion-list> 
-      <p *ngIf="appContacts.length==0">Uygulamayı Kullanan Arakadaşın Yok</p>
-      <ion-item *ngFor="let appContact of appContacts" routerLink="/chat/messages/{{appContact.phoneNumbers[0].value}}">
-        <ion-avatar slot="start">
-            <img src="../../../assets/dummy_pic.png">
-        </ion-avatar>
-        <ion-label>{{appContact.displayName}}</ion-label>
-      </ion-item>
-    </ion-list>-->
 
     <ion-grid>
         <h6>CONTACTS ({{appContacts.length}})</h6>

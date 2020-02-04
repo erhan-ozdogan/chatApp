@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from "@ionic/storage";
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { LoggerService } from "../logger/logger.service";
 
 
 @Injectable({
@@ -10,8 +11,10 @@ import { Platform } from '@ionic/angular';
 export class AuthenticationService {
   
   registerAuth= new BehaviorSubject(false);
+  user:any;
+  
 
-  constructor(private storage:Storage,private plt:Platform) {
+  constructor(private storage:Storage,private plt:Platform,private logger: LoggerService) {
     this.plt.ready().then(() => {
       this.checkIsRegister();
     });
@@ -26,19 +29,16 @@ export class AuthenticationService {
   isRegister(){
     return this.storage.get("register");
   }
-  writeLocal(user:string){
-    this.storage.set("register","true").then(()=>{
-      this.registerAuth.next(true);
-      console.log("writeLocal():Locale Yazıldı");
-    })
-    this.storage.set("user",user)
-  }
   writeLastOnlineTime(){
     let x=new Date().getTime()
-    this.storage.set("time",x).then(()=>{console.log("Son Görülme => "+x )})
+    this.storage.set("time",x).then(()=>{
+      this.logger.log("Son Görülme => "+x )
+    })
   }
   removeLastOnlineTime(){
-    this.storage.remove("time").then(()=>{console.log("Son Görülme Silindi")});
+    this.storage.remove("time").then(()=>{
+      this.logger.log("Son Görülme Silindi")
+    });
   }
   getLastOnlineTime(){
     return this.storage.get("time");
@@ -46,5 +46,5 @@ export class AuthenticationService {
   getUser(){
     return this.storage.get("user");
   }
- 
+
 }

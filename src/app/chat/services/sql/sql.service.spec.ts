@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BluetoothService } from './bluetooth.service';
+import { SQLService } from './sql.service';
 
-describe('BluetoothService', () => {
+describe('SQLService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: BluetoothService = TestBed.get(BluetoothService);
+    const service: SQLService = TestBed.get(SQLService);
     expect(service).toBeTruthy();
   });
 });

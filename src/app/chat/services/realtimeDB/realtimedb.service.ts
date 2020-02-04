@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable,NgZone } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { message } from "../SQLite/sqlite.service";
-import { SQLiteService } from "../SQLite/sqlite.service";
-import { BehaviorSubject} from 'rxjs';
+import { BehaviorSubject, ReplaySubject} from 'rxjs';
 
 import { NotificationService } from "../notificationService/notification.service";
 import { AuthenticationService } from "../authentication/authentication.service";
+import { SQLService,message } from '../sql/sql.service';
+import { LoggerService } from "../logger/logger.service";
 
 
 export interface fbmsg{
@@ -20,6 +20,9 @@ export interface fbmsg{
 export class RealtimedbService {
 
   message:message[]=[];
+  x:any;
+  y:any;
+  z:any;
   msg:message={
     to:'',
     from:'',
@@ -29,12 +32,17 @@ export class RealtimedbService {
   incomemsg:fbmsg;
   currentUser;
   add=new BehaviorSubject<message>(null);
+  removed=new BehaviorSubject<message>(null);
+  updated=new BehaviorSubject<message>(null);
   isNotification=true;
   chattingUser;
 
-  constructor(public rdb: AngularFireDatabase,private sqliteService:SQLiteService,private auth:AuthenticationService
-              ,private notificationService:NotificationService) { 
-    this.auth.getUser().then(res =>{this.currentUser=res;console.log("console",res)});
+  constructor(public rdb: AngularFireDatabase,
+              private zone:NgZone,
+              private auth:AuthenticationService,
+              private logger:LoggerService,
+              private sqlService:SQLService) { 
+    this.auth.getUser().then(res =>{this.currentUser=res;});
   }
 
   sendMessage(to:String,from:String,message:String,createdAt:number){
@@ -45,47 +53,123 @@ export class RealtimedbService {
       createdAt:createdAt
     })
   }
-//mainde ilk çağırıldığında mesajları çekiyor bu yüzden son mesajı tekrar sqlit db ye kayıt ediyor buda çift mesaja neden oluyor
   listenForMessage(isFirstTime){
-    let ft=isFirstTime;
+    let ft=Date.now();
+    this.logger.log("Veriler şundan itibaren alınacak: "+ft);
     this.auth.getUser().then(res=>{
       this.currentUser=res;
-      this.rdb.list('/messages/'+this.currentUser).valueChanges().subscribe(message =>{
-        if(message.length>0){
-        this.incomemsg=JSON.parse(JSON.stringify(message[message.length-1]));
+      if(this.x!=null)
+      this.x.unsubscribe();
+      this.x=this.rdb.database.ref('/messages/'+this.currentUser).orderByChild('createdAt').startAt(ft).on('child_added',(snapshot)=>{
+        let message=snapshot.val();
+        this.incomemsg=JSON.parse(JSON.stringify(message));
         this.msg={
           to:this.currentUser, //current user
           from:this.incomemsg.from,
           message:this.incomemsg.message,
           createdAt:this.incomemsg.createdAt
         }
-        if(ft!=true){
-          console.log("Alınan Mesaj:"+this.msg.message);
-          this.sqliteService.addMessage(this.msg);
-          this.auth.writeLastOnlineTime();
+        this.logger.log("Alınan Mesaj:"+this.msg.message);
+        this.sqlService.addMessage(this.msg);  
+        this.zone.run(()=>{
           if(this.msg.from==this.chattingUser){
-          this.add.next(this.msg);
+            this.add.next(this.msg);
           }
-          if(this.msg.from!=this.chattingUser){
-            this.notificationService.createNotification(this.msg.from,this.msg.message);
+        })
+        
+      });
 
-          }
+      if(this.y!=null)
+      this.y.unsubscribe();
+      this.y=this.rdb.database.ref('/messages/'+this.currentUser).on('child_removed',(snapshot)=>{
+        let message=snapshot.val();
+        this.incomemsg=JSON.parse(JSON.stringify(message));
+        this.msg={
+          to:this.currentUser, //current user
+          from:this.incomemsg.from,
+          message:this.incomemsg.message,
+          createdAt:this.incomemsg.createdAt
         }
-      }
-      ft=false;
-      
-      },error=>{console.log(error)}
-      );
-    })
-   }
+        this.logger.log("Silinen Mesaj:"+this.msg.message);
+        this.sqlService.removeMessage(this.msg);  
+        this.zone.run(()=>{
+          if(this.msg.from==this.chattingUser){
+            this.removed.next(this.msg);  
+          }
+        })
+      });
+      if(this.z!=null)
+      this.z.unsubscribe();
+      this.z=this.rdb.database.ref('/messages/'+this.currentUser).on('child_changed',(snapshot)=>{
+        let message=snapshot.val();
+        this.incomemsg=JSON.parse(JSON.stringify(message));
+        this.msg={
+          to:this.currentUser, //current user
+          from:this.incomemsg.from,
+          message:this.incomemsg.message,
+          createdAt:this.incomemsg.createdAt
+        }
+        this.logger.log("Güncellenen Mesaj:"+this.msg.message);
+        this.sqlService.updateMessage(this.msg);  
+        this.zone.run(()=>{
+          if(this.msg.from==this.chattingUser){
+            this.updated.next(this.msg);
+          }
+        })
+      })
+
+
+
+   })
+   
+  }
+   //----------------------------------------------------------------------------------------------
+   //----------------------------------------------------------------------------------------------
+
    getOfflineMessages(time){
-     console.log(this.currentUser);
       return this.rdb.list("/messages/"+this.currentUser,ref=> ref.orderByChild('createdAt').startAt(time)).valueChanges();
- 
    }
 
    getAdd():BehaviorSubject<message>{
      return this.add;
+   }
+   getRemoved():BehaviorSubject<message>{
+     return this.removed;
+   }
+   getUpdated():BehaviorSubject<message>{
+    return this.updated;
+  }
+   removeMessage(message:message){
+     let x;
+     this.rdb.database.ref("/messages/"+message.to).orderByChild('createdAt').equalTo(message.createdAt).once('value').then(res=>{
+     res.forEach(childsnap=>{
+        x=childsnap.key;
+      });
+      this.rdb.database.ref("/messages/"+message.to+"/"+x).remove().then(x=>{
+        this.sqlService.removeMessage(message);
+        this.logger.log("Mesaj Silindi");
+      })
+     });
+   }
+   updateMessage(message,msg){
+    let x;
+    return this.rdb.database.ref("/messages/"+message.to).orderByChild('createdAt').equalTo(message.createdAt).once('value').then(res=>{
+    res.forEach(childsnap=>{
+       x=childsnap.key;
+     });
+     this.rdb.database.ref("/messages/"+message.to+"/"+x).update({message:msg}).then(x=>{
+       this.sqlService.updateMessage(message,msg);
+       this.logger.log("Mesaj Güncellendi");
+     })
+    });
+
+   }
+
+   sync(){
+     return this.rdb.database.ref("/messages/"+this.currentUser);
+   }
+   syncTwo(contact){
+    return this.rdb.database.ref("/messages/"+contact);
    }
   
 

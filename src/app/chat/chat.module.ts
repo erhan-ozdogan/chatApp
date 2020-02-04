@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatRoutingModule } from './chat-routing.module';
-import { MainPageModule } from "./main/main.module";
 import { ContactPageModule } from "./contact/contact.module";
 import { MessagesPageModule } from "./messages/messages.module";
 import { Contacts } from "@ionic-native/contacts/ngx";
@@ -36,7 +35,6 @@ import {environment} from '../../environments/environment';
   imports: [
     CommonModule,
     ChatRoutingModule,
-    MainPageModule,
     AutosizeModule,
     ContactPageModule,
     MessagesPageModule,

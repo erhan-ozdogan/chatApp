@@ -15,7 +15,7 @@
       <div class="time"><br>
       {{ message.createdAt |date:'short' }}</div>
     </ion-col>
-    <ion-col offset="5" size="7" *ngIf="from == message.from" class="message my-message">
+    <ion-col  (click)="selectForDel(message)" offset="5" size="7" *ngIf="from == message.from" [ngClass]="message.createdAt==messageClass ? 'message deleteClass' : 'message my-message'">
         <span>{{message.message}}</span>
         <div class="time"t><br>
         {{ message.createdAt |date:'short' }}</div>
