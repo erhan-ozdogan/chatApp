@@ -1,5 +1,7 @@
 # Firebase Chat App 
 
+Angular & Ionic
+
 ### Features
 
 ### Login
