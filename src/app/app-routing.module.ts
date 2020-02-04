@@ -1,25 +1,28 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AppguardGuard } from "./services/appguard/appguard.guard"
 
 const routes: Routes = [
-  { 
-    path: '', 
-    redirectTo: 'chat', 
-    pathMatch: 'full' 
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
-  { 
-    path: 'home', 
-    loadChildren: './home/home.module#HomePageModule'
+  {
+    path: 'home',
+    loadChildren: './home/home.module#HomePageModule',
+    canActivate:[AppguardGuard]
   },
-  { 
-    path: 'chat', 
-    loadChildren: './chat/chat.module#ChatModule' 
-},
-{ 
-  path: '**', 
-  redirectTo: 'chat', 
-  pathMatch: 'full' 
-}
+  {
+    path: 'chat',
+    loadChildren: './chat/chat.module#ChatModule',
+    canActivate:[AppguardGuard]
+  },
+  { path: 'login',
+    loadChildren: './login/login.module#LoginPageModule',
+  }
+
+
 ];
 
 @NgModule({
@@ -28,4 +31,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

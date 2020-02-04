@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Doğrulama Kodu</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row size="8">
+
+     
+      <ion-col size="12" color="primary">
+        <form   [formGroup]="registerForm" (ngSubmit)="register()">
+          <div *ngIf="part2==false">
+            <div style="transform:scale(0.9);" id="recaptcha-container"></div>
+            <ion-item>
+              <ion-input formControlName="phone" type="tel" name="phone"  placeholder="Telefon Numarası Giriniz"></ion-input>
+            </ion-item>
+            <ion-button (click)="firebaseLogin()" size="medium" expand="block">Kodu Gönder</ion-button>
+          </div>
+          <div *ngIf="part2==true">
+            <ion-item>
+              <ion-input placeholder="Doğrulama Kodunu Giriniz" [(ngModel)]="verificationCode" formControlName="verifyCode" type="text" name="verifyCode"></ion-input>
+            </ion-item>
+            <ion-button (click)="verifyLoginCode()" size="medium" [disabled]="!registerForm.valid" expand="block">Doğrula</ion-button>
+          </div>
+        </form>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>  

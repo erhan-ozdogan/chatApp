@@ -1,0 +1,9 @@
+[submodule "src/app/src/app/chat"]
+	path = src/app/src/app/chat
+	url = https://github.com/2019-BLM441/module-160201039.git
+[submodule "src/src/app/chat"]
+	path = src/src/app/chat
+	url = https://github.com/2019-BLM441/module-160201039.git
+[submodule "src/app/chat"]
+	path = src/app/chat
+	url = https://github.com/2019-BLM441/module-160201039.git
